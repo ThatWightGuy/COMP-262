@@ -1,0 +1,11 @@
+/// EXAMPLE for MC4-Implement the 'ASL' instruction steps 
+//the next line allows us to initialize regs and memory
+UnitPre:  A=0x7EFF, Z=1, N=0, C=0, V=1
+//the next line allows us to specify/verify the expected values after execution
+UnitPost: A=0xFDFE, Z=0, N=1, C=0, V=0
+//
+// ASRA-sets the N, Z, V & C flags
+//
+1. A=1, AMux=1, ALU=12, CMux=1, C=1, ANDZ=0; ZCk, VCk, NCk, CCk, LoadCk
+2. A=0, AMux=1, ALU=12, CMux=1, C=0, ANDZ=1; ZCk, VCk, NCk, CCk, LoadCk 
+// ...Done:reg A has been ASL'ed......

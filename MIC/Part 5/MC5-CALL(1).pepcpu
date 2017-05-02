@@ -1,0 +1,19 @@
+// EXAMPLE for MC5-Implement the 'CALL sub' instruction steps 
+//the next line allows us to initialize regs and memory
+UnitPre: IR=0x163333, SP=0x001E, PC=0x2222, Mem[0x001C]=0x0000
+UnitPost:IR=0x163333, SP=0x001C, PC=0x3333, Mem[0x001C]=0x2222
+//CALL subroutine RTL>
+//
+1. A=5, B=23, AMux=1, ALU=3, CMux=1, ANDZ=0, C=5; CCk, LoadCk
+2. A=4, B=5; MARCk
+3. A=6, AMux=1, ALU=0, CMux=1, MDRMux=1; MDRCk
+4. MemWrite
+5. MemWrite
+6. A=5, B=23, AMux=1, ALU=3, CMux=1, ANDZ=0, C=5; CCk, LoadCk
+7. A=4, B=5; MARCk
+8. A=6, AMux=1, ALU=0, CMux=1, MDRMux=1; MDRCk
+9. MemWrite
+10. MemWrite
+11. A=10, AMux=1, ALU=0, CMux=1, ANDZ=0, C=7; CCk, LoadCk
+12. A=9, AMux=1, ALU=0, CMux=1, ANDZ=0, C=6; CCk, LoadCk
+// subroutine CALL'ed

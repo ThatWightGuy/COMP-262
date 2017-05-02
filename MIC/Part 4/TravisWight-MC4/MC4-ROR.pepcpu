@@ -1,0 +1,11 @@
+/// EXAMPLE for MC4-Implement the 'ROR' instruction steps 
+//the next line allows us to initialize regs and memory
+UnitPre:  A=0xFFFF, Z=1, N=1, C=0
+//the next line allows us to specify/verify the expected values after execution
+UnitPost: A=0x7FFF, Z=0, N=0, C=1
+//
+// ROR-sets the N, Z & C flags
+//
+1. A=0, AMux=1, ALU=14, CMux=1, C=0, ANDZ=0; ZCk, NCk, CCk, LoadCk
+2. A=1, AMux=1, ALU=14, CMux=1, C=1, ANDZ=1; ZCk, CCk, LoadCk
+// ...Done:reg A has been ROR'ed......

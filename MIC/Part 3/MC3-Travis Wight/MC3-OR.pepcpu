@@ -1,0 +1,13 @@
+// EXAMPLE for MC3-Implement the 'OR' instruction steps
+// We assume the the Operand's Effective Address has been calculated and the value has been Fetched from memory to the T2 reg
+//the next line allows us to initialize regs and memory
+UnitPre:  T2=0x1111, A=0xEEEE, Z=1, N=0
+//the next line allows us to specify/verify the expected values after execution
+UnitPost: T2=0x1111, A=0xFFFF, Z=0, N=1
+//
+// ORA
+1. A=1, AMux=0, ALU=10, CMux=1, C=1, ANDZ=0; ZCk, LoadCk
+2. A=0, AMux=0, ALU=10, CMux=1, C=0, ANDZ=0; NCk, LoadCk
+//
+// ...Done:operand OR'ed to reg A......
+

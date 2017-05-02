@@ -1,0 +1,13 @@
+// REVLOA>>> this instruction REVerses, produces a mirror image of or pivots the bits in the HIGH ORDER byte of the INDEX Register,
+// i.e.: bits are swapped; bit 15 swaps with bit 8, bit 14 with 9, bit 13 with 10 and bit 12 with 11.
+// The low order byte of the Index Register is NOT modified.
+// Example: if the Index Reg high byte is binary 0111 1000 then after the REVLOA instruction the
+// Index Reg high byte is binary 0001 1110
+//
+UnitPre: X=0x5512
+UnitPost:X=0xAA12
+// REVLOA
+//
+1. A=2, AMux=1, ALU=10, CMux=1, C=2, ANDZ=0; LoadCk
+// High order byte of the Index reg has been reversed/pivoted/mirror-imaged
+

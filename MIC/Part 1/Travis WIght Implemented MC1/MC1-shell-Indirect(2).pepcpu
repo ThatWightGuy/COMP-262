@@ -1,0 +1,63 @@
+// Travis Wight
+
+// SHELL for MC1---Implement the 'CO/FO' steps
+// CO/FO - the 'Address Modes is Predetermined' so just use that information to Fetch the Operand
+//
+// Mode=INDIRECT - The EA is calculated as: the value located at memory location indicated by the Op Specifier
+// the next line allows us to initialize regs and memory
+UnitPre:  IR=0xAB0002, PC=0x000F,  Mem[0x0002]=0x0006, Mem[0x0006]=0x1234, T2=0x0000, T3=0x0000 
+// the next line allows us to specify/verify the expected values after execution
+UnitPost: IR=0xAB0002, PC=0x000F, T2=0x1234, T3=0x0007
+// first we do as we do for Direct, using IR(OS) for the mem address
+// MAR <- IR-OS
+1. A=9,B=10;MARCk
+// CR <- 'R'
+2. MemRead
+// MDR <- Memory
+3. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', T2(High) <- ALU 
+4. AMux=0, ALU=0, CMux=1, C=12; LoadCk
+// T3(15) <- IR(10) + 1, low-order byte first.
+5. A=10, B=23, AMux=1, ALU=1, CMux=1, ANDZ=0, C=15; CCk, LoadCk
+// T3(14) <- IR(9) + 0, high-order byte last.
+6. A=9, B=22, AMux=1, ALU=2, CMux=1, ANDZ=1, C=14; NCk, ZCk, VCk, CCk, LoadCk
+//
+// MAR <- T3...
+7. A=14,B=15;MARCk
+// CR <- 'R'
+8. MemRead
+// MDR <- Memory
+9. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', T2(Low) <- ALU 
+10. AMux=0, ALU=0, CMux=1, C=13; LoadCk
+//
+// now T2 has the final location, lets move it to T3 first
+// ALU <- T2(12/13), ALU <- 'Passthrough', T3(14/15) <- ALU 
+
+11. AMux=0, ALU=0, CMux=1, C=15; LoadCk
+
+// now just retrieve the data using the address in T3 and loading the operands into to T2
+// MAR <- T3...get HO byte of the Operand
+12. A=14,B=15;MARCk
+// CR <- 'R'
+13. MemRead
+// MDR <- Memory
+14. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', T2(High) <- ALU 
+15. AMux=0, ALU=0, CMux=1, C=12; LoadCk
+// increment by one 
+// T3(15) <- T3(15) + 1, low-order byte first.
+16. A=15, B=23, AMux=1, ALU=1, CMux=1, ANDZ=0, C=15; CCk, LoadCk
+// T3(14) <- T3(14) + 0, high-order byte last.
+17. A=14, B=22, AMux=1, ALU=1, CMux=1, ANDZ=0, C=14; CCk, LoadCk
+//
+// MAR <- T3...get LO byte of the Operand
+18. A=14,B=15;MARCk
+// CR <- 'R'
+19. MemRead
+// MDR <- Memory
+20. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', T2(Lo) <- ALU 
+21. AMux=0, ALU=0, CMux=1, C=13; LoadCk
+//
+// ...DONE, the Instruction operand has been loaded to the T2 reg....

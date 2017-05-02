@@ -1,0 +1,26 @@
+// SHELL for MC2-LD---Implement the 'LD' instructions
+//
+// We assume the the Operand's Effective Address has been calculated and the value has been Fetched from memory to the T2 reg
+//the next line allows us to initialize regs and memory
+UnitPre:  T2=0x8234, A=0x0000, X=0x0000, Z=1, N=0
+//the next line allows us to specify/verify the expected values after execution
+UnitPost: T2=0x8234, A=0x8234, X=0x8234, Z=0, N=1
+//
+// LDA
+//
+// ALU <- T2(Low), ALU <- 'Passthrough', A(Low) <- ALU, Z <- A(Low)=0 
+1. A=1, B=13, AMux=0, ALU=1, CMux=1, ANDZ=0, C=1; ZCk, LoadCk 
+// ALU <- T2(High), ALU <- 'Passthrough', A(High) <- ALU, N <- A(High)<0, Z <- (A(Low)=0 AND A(High)=0) 
+2. A=0, B=12, AMux=0, ALU=1, CMux=1, ANDZ=1, C=0; NCk, LoadCk 
+//
+// ...DONE, the operand has been loaded to the A reg....
+//
+// LDX
+//
+// ALU <- T2(Low), ALU <- 'Passthrough', X(Low) <- ALU, Z <- X(Low)=0 
+3. A=3, B=13, AMux=0, ALU=1, CMux=1, ANDZ=0, C=3; ZCk, LoadCk 
+// ALU <- T2(High), ALU <- 'Passthrough', X(High) <- ALU, N <- X(High)<0, Z <- (X(Low)=0 AND X(High)=0) 
+4. A=2, B=12, AMux=0, ALU=1, CMux=1, ANDZ=1, C=2; NCk, LoadCk 
+//
+// ...DONE, the operand has been loaded to the X reg....
+

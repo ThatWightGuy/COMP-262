@@ -1,0 +1,23 @@
+// SHELL for MC2-SUB-CP---Implement the 'SUB/CP' instructions
+//
+// We assume that the Operand has been Fetched from memory to the T2 reg
+// SUBA subtract operand from a
+//the next line allows us to initialize regs and memory
+UnitPre:  T2=0x8756, T3=0x0000, A=0x4312, N=1, Z=1, V=1, C=0
+//the next line allows us to specify/verify the expected values after execution
+UnitPost: T2=0x8756, T3=0x3466, A=0xBBBC, N=0, Z=0, V=0, C=1
+//
+// A(1) <- A(1) - T2(13), low-order byte first.
+1. A=1, B=13, AMux=1, ALU=3, CMux=1, ANDZ=0, C=1; CCk, LoadCk
+// A(0) <- A(0) - T2(12), high-order byte last.
+2. A=0, B=12, AMux=1, ALU=4, CMux=1, ANDZ=1, C=0; NCk, ZCk, VCk, CCk, LoadCk 
+//
+// ...Done:operand subtracted from reg A......
+// CPA compare operand to A
+//
+// T3(15) <- A(1) - T2(13), low-order byte first.
+3. A=1, B=13, AMux=1, ALU=3, CMux=1, ANDZ=0, C=15; NCk, CCk, LoadCk
+// T3(14) <- A(0) - T2(12), high-order byte last.
+4. A=0, B=12, AMux=1, ALU=4, CMux=1, ANDZ=1, C=14; NCk, ZCk, VCk, CCk, LoadCk 
+//
+// ...Done:operand compared to reg A......

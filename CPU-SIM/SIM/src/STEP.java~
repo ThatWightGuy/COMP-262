@@ -1,0 +1,300 @@
+// This is the SHELL for the STEP class for the CPU SIM project
+// STUDENT NAME:
+// STUDENT STATUS COMMENTS:
+// Part1:
+//
+// Part2:
+//
+// Part3:
+//
+// Part4:
+//
+// Part5:
+//
+// Part6:
+//
+// Part7:
+//
+//----------------------------------------------------------------------------------------------------
+public class STEP{
+//GLOBAL VARIABLES
+    CPU cpu; // this is the object(instance of a class) that represents the 'STATE' of the CPU
+  /* these are the CPU class(Object) private attributes(variables)which represent the 'state' of the CPU
+  private int A; private int X; private int PC; private int SP; 
+  private byte N; private byte Z; private byte V; private byte C;
+  private int IS; private int OS; private int OP;
+  private String DESCR; private char MODE; private char [ ] MEMORY;
+  //
+  // accessors
+  public int getPC() // returns PC
+  public int getSP() // returns SP
+  public int getIS() // returns IS
+  public int getOS() // returns OS
+  public int getOP() // returns OP
+  public int getA()  // returns A
+  public int getX()  // returns X
+  public byte getN() // returns N
+  public byte getZ() // returns Z
+  public byte getV() // returns V
+  public byte getC() // returns C
+  public String getDESCR()  // returns DESCR
+  public char getMODE()     // returns MODE
+  public char getMEMORY(int address) 
+  // IF address is valid it returns MEMORY[address]
+  // otherwise it displays an error message and exits
+  //
+  // mutators
+  public void setPC(int pc) // sets PC
+  public void setSP(int sp) // sets SP
+  public void setIS(int is) // sets IS
+  public void setOS(int os) // sets OS
+  public void setOP(int op) // sets OP
+  public void setA(int a)  // sets A
+  public void setX(int x)  // sets X
+  public void setN(byte n)  // sets N
+  public void setZ(byte n)  // sets Z
+  public void setV(byte n)  // sets V
+  public void setC(byte n)  // sets C
+  public void setDESCR(String descr)  // sets DESCR
+  public void setMODE(char mode)      // sets MODE
+  public void setMEMORY(int address, char value) 
+  // IF address is invalid(out of range) it displays an error message and exits
+  // otherwise it sets MEMORY[address] = value
+  //
+ */
+    // GLOBAL VARIABLES
+    boolean CO=true; boolean FO=true; boolean WO=false; // logical vars that control the stage execution
+	boolean DIS=false; // logical var that controls displaying the updated CPU values to assist debugging
+    // 
+    boolean Unary=false; // logical var to differentiate between the one/three byte type instructions
+    //
+    int EA=0;    // this var holds: 1) the address of the instruction to be 'fetched OR 
+                 //	                2) the instruction's operand memory effective address; 
+                 // this address is used as the INDEX to to read/write from/to memory array
+    int NEA=0;   // this a temp var is used for iNdirect address calculating/processing
+    char DATA=0; // this var holds the single byte that is read from or written to memory
+    int OP=0;    // this var is used to SWITCH on the opcode in the DI() and EX() methods
+    //
+// the 'main'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  public static void main(String args[]) { 
+    new SIMULATOR(); 
+  } // all the main does is to instantiate an object from the SIMULATOR class
+//
+// end of the 'main' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//
+// this method is invoked by the SIMULATOR when the user clicks the 'STEP' button
+// and executes ONE VON NEUMANN CYCLE using/updating the CPU state passed as a parameter
+  public void dostep(CPU cpu) { // the VonNeumann loop
+           this.cpu = cpu; // the CPU state object
+		   // reset global vars for the start of a new Instruction cycle
+           Unary=false; CO=true; FO=true; WO=false; EA=0; NEA=0; DATA=0; OP=0;
+           FI(); // always executed
+           DI(); // always executed
+    if(CO) CO(); // MAY be skipped
+    if(FO) FO(); // MAY be skipped
+           EX(); // always executed
+    if(WO) WO(); // MAY be skipped
+// end of one pass of the VonNeumann cycle
+    if(DIS) DISPLAY(); // optional step to display CPU values to the printer
+//           
+    return;} // end of dostep method
+//
+//
+// START OF Instruction State METHODS
+  void FI(){
+  //
+  }// end of the FI() method
+  //
+  void DI(){
+  //
+  }// end of the DI() method
+  //
+  void CO(){
+  //
+  }; // end of the CO() method
+  //
+  void FO(){
+  //
+  };// end of the FO() method
+  //
+  void EX(){
+  // 
+  }; // end of the EX() method
+  //
+  void WO(){
+  //
+  };// end of the WO()
+// 
+// start of individual instruction execution methods
+// these methods will be invoked/called from the EX() method
+//
+  // start of branches
+  // all branches will use the EA calculated in the CO stage
+  // since the cpu.OP would have NOT been updated because
+  // the FO stage was NOT executed
+  void BR()   {
+        System.out.println("BR INSTRUCTION EXECUTED");
+  } // end of BR()
+  //
+  void BRLE() {
+        System.out.println("BRLE INSTRUCTION EXECUTED");
+  } // end of BRLE()
+//
+  void BRLT() {
+       System.out.println("BRLT INSTRUCTION EXECUTED");
+  } // end of BRLT()
+//
+  void BREQ() {
+        System.out.println("BREQ INSTRUCTION EXECUTED");
+  } // end of BREQ()
+//
+  void BRNE() {
+        System.out.println("BRNE INSTRUCTION EXECUTED");
+  } // end of BRNE()
+//
+  void BRGE() {
+        System.out.println("BRGE INSTRUCTION EXECUTED");
+  } // end of BRGE()
+//
+  void BRGT() {
+        System.out.println("BRGT INSTRUCTION EXECUTED");
+  } // end of BRGT()
+//
+  void BRV() {
+        System.out.println("BRV INSTRUCTION EXECUTED");
+  } // end of BRV()
+//
+  void BRC() {
+        System.out.println("BRC INSTRUCTION EXECUTED");
+  } // end of BRC()
+//
+// start of unary instr.
+  void NOTA() {
+        System.out.println("NOTA INSTRUCTION EXECUTED");
+  } // end of NOTA()
+//
+  void NOTX() {
+        System.out.println("NOTX INSTRUCTION EXECUTED");
+  } // end of NOTX()
+//
+  void NEGA() {
+        System.out.println("NEGA INSTRUCTION EXECUTED");
+  } // end of NEGA()
+//
+  void NEGX() {
+        System.out.println("NEGX INSTRUCTION EXECUTED");
+  } // end of NEGX()
+//
+  void ASLA() {
+       System.out.println("ASLA INSTRUCTION EXECUTED");
+  } // end of ASLA()
+//
+  void ASLX() {
+        System.out.println("ASLX INSTRUCTION EXECUTED");
+  } // end of ASLX()
+//           
+  void ASRA() {
+        System.out.println("ASRA INSTRUCTION EXECUTED");
+  } // end of ASRA()
+//
+  void ASRX() {
+        System.out.println("ASRX INSTRUCTION EXECUTED");
+  } // end of ASRX()
+//
+  void ROLA() {
+        System.out.println("ROLA INSTRUCTION EXECUTED");
+  } // end of ROLA()
+//
+  void ROLX() {
+        System.out.println("ROLX INSTRUCTION EXECUTED");
+  } // end of ROLX()
+//
+  void RORA() {
+       System.out.println("RORA INSTRUCTION EXECUTED");
+  } // end of RORA()
+//
+  void RORX() {
+        System.out.println("RORX INSTRUCTION EXECUTED");
+  } // end of RORX()
+//
+// start of mem/reg instructions
+  void ADDA() {
+       System.out.println("ADDA INSTRUCTION EXECUTED");
+  } // end of ADDA()
+//
+  void ADDX() {
+       System.out.println("ADDX INSTRUCTION EXECUTED");
+  } // end of ADDX()
+//
+  void SUBA() {
+        System.out.println("SUBA INSTRUCTION EXECUTED");
+  } // end of SUBA()
+//
+  void SUBX() {
+       System.out.println("SUBX INSTRUCTION EXECUTED");
+  } // end of SUBX()
+//
+  void ANDA() {
+        System.out.println("ANDA INSTRUCTION EXECUTED");
+  } // end of ANDA()
+//
+  void ANDX() {
+        System.out.println("ANDX INSTRUCTION EXECUTED");
+  } // end of ANDX()
+//
+  void ORA() {
+        System.out.println("ORA INSTRUCTION EXECUTED");
+  } // end of ORA()
+//
+  void ORX() {
+       System.out.println("ORX INSTRUCTION EXECUTED");
+  } // end of ORX()
+//
+  void CPA() {
+        System.out.println("CPA INSTRUCTION EXECUTED");
+  } // end of CPA()
+//
+  void CPX() {
+        System.out.println("CPX INSTRUCTION EXECUTED");
+  } // end of CPX()
+//
+  void LDA() {
+        System.out.println("LDA INSTRUCTION EXECUTED");
+  } // end of LDA()
+//
+  void LDX() {
+        System.out.println("LDX INSTRUCTION EXECUTED");
+  } // end of LDX()
+//
+  void LDBYTEA() {
+        System.out.println("LDBYTEA INSTRUCTION EXECUTED");
+  } // end of LDBYTEA()
+//
+  void LDBYTEX() {
+        System.out.println("LDBYTEX INSTRUCTION EXECUTED");
+  } // end of LDBYTEX()
+//
+  void STA() {
+        System.out.println("STA INSTRUCTION EXECUTED");
+  } // end of STA()
+//
+  void STX() {
+        System.out.println("STX INSTRUCTION EXECUTED");
+  } // end of STX()
+//
+  void STBYTEA() {
+        System.out.println("STBYTEA INSTRUCTION EXECUTED");
+  } // end of STBYTEA()
+//
+  void STBYTEX() {
+        System.out.println("STBYTEX INSTRUCTION EXECUTED");
+  } // end of STBYTEX()
+//
+  void DISPLAY() { // optional step to display CPU values to the printer
+  System.out.printf("\nPC: 0x%04x, SP: 0x%04x, IS: 0x%02x, OS: 0x%04x, OP: 0x%04x, A: 0x%04x, X: 0x%04x\n",
+                      cpu.getPC(), cpu.getSP(), cpu.getIS(), cpu.getOS(), cpu.getOP(), cpu.getA(), cpu.getX());
+  System.out.printf("N: 0x%01x, Z: 0x%01x, V: 0x%01x, C: 0x%01x, DESCR: %s, MODE: %c\n",
+                      cpu.getN(), cpu.getZ(), cpu.getV(), cpu.getC(), cpu.getDESCR(), cpu.getMODE());
+  } // end of DISPLAY()
+//
+} // class step

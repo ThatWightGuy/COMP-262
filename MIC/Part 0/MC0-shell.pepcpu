@@ -1,0 +1,49 @@
+// Travis Wight
+
+// SHELL for MC0---Implement the 'Fetch Instruction(Trinary)' steps
+// FI - Fetch the instruction specifier and increment PC by 1
+// the next line allows us to initialize regs and memory
+UnitPre: IR=0x000000, PC=0x000F, Mem[0x000F]=0xAB00, Mem[0x0011]=0x0A 
+// the next line allows us to specify/verify the expected values after execution
+UnitPost: IR=0xAB000A, PC=0x0012
+// MAR <- PC, fetch instruction opcode specifier.
+1. A=6, B=7; MARCk
+// CR <- 'R'
+2. MemRead
+// MDR <- Memory
+3. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', IR(OP) <- ALU 
+4. AMux=0, ALU=0, CMux=1, C=8; LoadCk
+// PC <- PC + 1, low-order byte first.
+5. A=7, B=23, AMux=1, ALU=1, CMux=1, ANDZ=0, C=7; CCk, LoadCk
+// PC <- PC + 0, high-order byte last.
+6. A=6, B=22, AMux=1, ALU=2, CMux=1, ANDZ=1,C=6; NCk, ZCk, VCk, CCk, LoadCk
+// FI - Fetch the instruction's Operand specifier(HO byte) and increment PC by 1]
+
+// MAR <- PC, fetch instruction's operand specifier(HO byte).
+7. A=6, B=7; MARCk
+// CR <- 'R'
+8. MemRead
+// MDR <- Memory
+9. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', IR(OS-High) <- ALU 
+10. AMux=0, ALU=0, CMux=1, C=9; LoadCk
+// PC <- PC + 1, low-order byte first.
+11. A=7, B=23, AMux=1, ALU=1, CMux=1, ANDZ=0, C=7; CCk, LoadCk
+// PC <- PC + 0, high-order byte last.
+12. A=6, B=22, AMux=1, ALU=2, CMux=1, ANDZ=1, C=6; NCk, ZCk, VCk, CCk, LoadCk
+// FI - Fetch the instruction's Operand specifier(LO byte) and increment PC by 1
+
+// MAR <- PC, fetch instruction's operand specifier(LO byte).
+13. A=6, B=7; MARCk
+// CR <- 'R'
+14. MemRead
+// MDR <- Memory
+15. MemRead, MDRMux=0; MDRCk
+// ALU <- MDR, ALU <- 'Passthrough', IR(OS-Low) <- ALU 
+16. AMux=0, ALU=0, CMux=1, C=10; LoadCk
+// PC <- PC + 1, low-order byte first.
+17. A=7, B=23, AMux=1, ALU=1, CMux=1, ANDZ=0, C=7; CCk, LoadCk
+// PC <- PC + 0, high-order byte last.
+18. A=6, B=22, AMux=1, ALU=2, CMux=1, ANDZ=1, C=6; NCk, ZCk, VCk, CCk, LoadCk
+// ...DONE, the Instruction has been loaded to the IR....
